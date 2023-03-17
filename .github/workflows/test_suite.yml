@@ -1,6 +1,23 @@
 name: test-suite
 on: [push]
 jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        py-version: ["3.9", "3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{matrix.py-version}}
+      - name: install-linters
+        run: pip install black mypy
+      - name: format-check
+        run: black --check --verbose --diff hvac/
+      - name: type-check
+        run: mypy --strict hvac/
+
   test:
     runs-on: ubuntu-22.04
     strategy:
