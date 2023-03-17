@@ -8,11 +8,9 @@ jobs:
         py-version: ["3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: ./.github/actions/setup-dev-environment
         with:
-          python-version: ${{matrix.py-version}}
-      - name: install-linters
-        run: pip install black mypy
+          py-version: ${{matrix.py-version}}
       - name: format-check
         run: black --check --verbose --diff hvac/
       - name: type-check
@@ -25,10 +23,8 @@ jobs:
         py-version: ["3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: ./.github/actions/setup-dev-environment
         with:
-          python-version: ${{matrix.py-version}}
-      - name: install-pytest
-        run: pip install pytest
+          py-version: ${{matrix.py-version}}
       - name: run-pytest
         run: python -m pytest
